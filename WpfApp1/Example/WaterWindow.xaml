@@ -1,0 +1,77 @@
+﻿<Window x:Class="IGeek.WpfApp1.Example.WaterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IGeek.WpfApp1.Example"
+        mc:Ignorable="d"
+        Title="WaterWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Storyboard x:Key="sb">
+            <DoubleAnimation Duration="0:0:1"
+                             To="-100"
+                             Storyboard.TargetName="tt"
+                             Storyboard.TargetProperty="X" RepeatBehavior="Forever" />
+            <DoubleAnimation Duration="0:0:1.6"
+                             To="-100"
+                             Storyboard.TargetName="tt1"
+                             Storyboard.TargetProperty="X"
+                             BeginTime="0:0:0.2" RepeatBehavior="Forever" />
+
+            <DoubleAnimation Duration="0:0:1.2"
+                             To="0"
+                             Storyboard.TargetName="tt2"
+                             Storyboard.TargetProperty="X"
+                             BeginTime="0:0:0.4" RepeatBehavior="Forever" />
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource sb}" />
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid>
+        <Border Width="100" Height="100" Background="#DDD" CornerRadius="50">
+            <Border.Clip>
+                <EllipseGeometry Center="50,50" RadiusX="50" RadiusY="50" />
+            </Border.Clip>
+            <Canvas ClipToBounds="True">
+                <Path Data="
+                      M0 0
+                      A40 40 0 0 0 50 0
+                      A40 40 0 0 1 100 0
+                      A40 40 0 0 0 150 0
+                      A40 40 0 0 1 200 0
+                      L200 100 0 100" Fill="#9F90">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="0" Y="40" x:Name="tt1" />
+                    </Path.RenderTransform>
+                </Path>
+
+                <Path Data="
+                  M0 0
+                  A50 50 0 0 0 50 0
+                  A50 50 0 0 1 100 0
+                  A50 50 0 0 0 150 0
+                  A50 50 0 0 1 200 0
+                  L200 100 0 100" Fill="Pink">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="0" Y="40" x:Name="tt" />
+                    </Path.RenderTransform>
+                </Path>
+
+                <Path Data="
+                  M0 0
+                  A50 50 0 0 0 50 0
+                  A50 50 0 0 1 100 0
+                  A50 50 0 0 0 150 0
+                  A50 50 0 0 1 200 0
+                  L200 100 0 100" Fill="Green" Opacity="0.2">
+                    <Path.RenderTransform>
+                        <TranslateTransform X="-100" Y="40" x:Name="tt2" />
+                    </Path.RenderTransform>
+                </Path>
+            </Canvas>
+        </Border>
+    </Grid>
+</Window>

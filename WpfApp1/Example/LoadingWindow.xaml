@@ -1,0 +1,142 @@
+﻿<Window x:Class="IGeek.WpfApp1.Example.LoadingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IGeek.WpfApp1.Example"
+        mc:Ignorable="d"  WindowStartupLocation="CenterScreen"
+        Title="LoadingWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Storyboard x:Key="sb" RepeatBehavior="Forever">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="ellipse_1"
+                                  Storyboard.TargetProperty="Margin">
+                <SplineThicknessKeyFrame Value="0,0,0,0" KeyTime="0:0:0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:02" Value="315,0,0,0" KeySpline="0.1,0.7,0.3,0.1" />
+            </ThicknessAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="ellipse_2"
+                                  Storyboard.TargetProperty="Margin" BeginTime="0:0:0.3">
+                <SplineThicknessKeyFrame Value="0,0,0,0" KeyTime="0:0:0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:02" Value="315,0,0,0" KeySpline="0.1,0.7,0.3,0.1" />
+            </ThicknessAnimationUsingKeyFrames>
+
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="ellipse_3"
+                                  Storyboard.TargetProperty="Margin" BeginTime="0:0:0.6">
+                <SplineThicknessKeyFrame Value="0,0,0,0" KeyTime="0:0:0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:02" Value="315,0,0,0" KeySpline="0.1,0.7,0.3,0.1" />
+            </ThicknessAnimationUsingKeyFrames>
+
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="ellipse_4"
+                                  Storyboard.TargetProperty="Margin" BeginTime="0:0:0.9">
+                <SplineThicknessKeyFrame Value="0,0,0,0" KeyTime="0:0:0" />
+                <SplineThicknessKeyFrame KeyTime="00:00:02" Value="315,0,0,0" KeySpline="0.1,0.7,0.3,0.1" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="sb_2">
+            <RectAnimation Duration="0:0:1"
+                           To="20,0,20,15"
+                           Storyboard.TargetName="vb"
+                           Storyboard.TargetProperty="Viewport"
+                           RepeatBehavior="Forever" />
+        </Storyboard>
+        <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025" />
+        <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6" />
+        <SolidColorBrush x:Key="ProgressBar.Border" Color="#FFBCBCBC" />
+
+        <Style x:Key="ProgressBarStyle1" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="{StaticResource ProgressBar.Progress}" />
+            <Setter Property="Background" Value="{StaticResource ProgressBar.Background}" />
+            <Setter Property="BorderBrush" Value="{StaticResource ProgressBar.Border}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid x:Name="TemplateRoot">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Determinate" />
+                                    <VisualState x:Name="Indeterminate">
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0.25" />
+                                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.25" />
+                                                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.25" />
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <PointAnimationUsingKeyFrames Storyboard.TargetName="Animation" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
+                                                <EasingPointKeyFrame KeyTime="0" Value="-0.5,0.5" />
+                                                <EasingPointKeyFrame KeyTime="0:0:1" Value="0.5,0.5" />
+                                                <EasingPointKeyFrame KeyTime="0:0:2" Value="1.5,0.5" />
+                                            </PointAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
+                            <Rectangle x:Name="PART_Track" />
+                            <Grid x:Name="PART_Indicator" ClipToBounds="true" HorizontalAlignment="Left">
+                                <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" />
+                                <Rectangle x:Name="Animation" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="TemplateRoot">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsIndeterminate" Value="true">
+                                <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource sb_2}" />
+            <BeginStoryboard Storyboard="{StaticResource sb}" />
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid>
+        <Grid VerticalAlignment="Center" Width="300" Background="#EEE" ClipToBounds="True">
+            <Ellipse Width="15" Height="15" Fill="Red" HorizontalAlignment="Left"
+         Margin="-15,0,0,0" Name="ellipse_1" />
+            <Ellipse Width="15" Height="15" Fill="Red" HorizontalAlignment="Left"
+Margin="-15,0,0,0" Name="ellipse_2" />
+            <Ellipse Width="15" Height="15" Fill="Red" HorizontalAlignment="Left"
+Margin="-15,0,0,0" Name="ellipse_3" />
+            <Ellipse Width="15" Height="15" Fill="Red" HorizontalAlignment="Left"
+Margin="-15,0,0,0" Name="ellipse_4" />
+        </Grid>
+
+        <ProgressBar Style="{DynamicResource ProgressBarStyle1}" Height="15" Width="200" VerticalAlignment="Top"
+                     Value="40">
+            <ProgressBar.Foreground>
+                <VisualBrush TileMode="Tile" Viewport="0,0,20,15" ViewportUnits="Absolute" x:Name="vb">
+                    <VisualBrush.Visual>
+                        <Border Background="Transparent">
+                            <Border.RenderTransform>
+                                <SkewTransform AngleX="-40" />
+                            </Border.RenderTransform>
+                            <Border Width="20" Height="15" Margin="3,0" Background="Orange" />
+                        </Border>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </ProgressBar.Foreground>
+        </ProgressBar>
+    </Grid>
+</Window>
